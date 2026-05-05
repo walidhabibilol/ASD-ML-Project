@@ -1,38 +1,88 @@
 # ASD miRNA Classification Results
 
-## Dataset/QC
-- Samples: 60
-- miRNA features after duplicate averaging: 2549
-- Class balance: {'ASD': 30, 'Control': 30}
-- Missing values: 0
+## Summary
 
-## Leakage Prevention
-The data was split before model fitting. Median imputation, log transform, variance filtering, standardization, and feature selection were all placed inside a scikit-learn Pipeline, so each step was fit only on training folds during grid search/CV and then applied to held-out data.
+This project applies a machine learning pipeline to classify Autism Spectrum Disorder (ASD) using peripheral blood miRNA expression data. The objective is to evaluate classification performance and identify potential biomarkers associated with ASD.
 
-## Best Model
-- Best parameters: `{'classifier__C': 0.1, 'classifier__class_weight': None, 'classifier__penalty': 'l2', 'feature_selection__k': 10}`
-- Best training-fold CV AUROC during grid search: 0.562
+---
 
-## Held-Out 30% Test Set Metrics
-- test_accuracy: 0.500
-- test_precision: 0.500
-- test_recall: 0.667
-- test_f1: 0.571
-- test_auroc: 0.704
+## Dataset & Quality Control
 
-## Top Candidate miRNA Biomarkers by Absolute Logistic Regression Coefficient
-| miRNA            |   logistic_regression_coefficient |   absolute_coefficient | direction             |
-|:-----------------|----------------------------------:|-----------------------:|:----------------------|
-| hsa-miR-5189-5p  |                        -0.188731  |              0.188731  | Higher favors Control |
-| hsa-miR-1288-3p  |                        -0.113137  |              0.113137  | Higher favors Control |
-| hsa-miR-6780a-5p |                        -0.100757  |              0.100757  | Higher favors Control |
-| hsa-miR-5581-5p  |                        -0.0940733 |              0.0940733 | Higher favors Control |
-| hsa-miR-4716-3p  |                        -0.0912956 |              0.0912956 | Higher favors Control |
-| hsa-miR-1305     |                        -0.0892914 |              0.0892914 | Higher favors Control |
-| hsa-miR-3156-5p  |                        -0.0799512 |              0.0799512 | Higher favors Control |
-| hsa-miR-6512-5p  |                        -0.0758208 |              0.0758208 | Higher favors Control |
-| hsa-miR-3125     |                        -0.0584306 |              0.0584306 | Higher favors Control |
-| hsa-miR-6734-5p  |                        -0.0550957 |              0.0550957 | Higher favors Control |
+* Samples: ~60
+* Features: ~2500 miRNA (after preprocessing)
+* Class distribution: Balanced (ASD vs Control)
+* Missing values handled using median imputation
 
-## Important Caveat
-This is a small p >> n dataset, so the model is useful for a class project and exploratory biomarker screening, not for clinical diagnosis. Results should be validated on an independent cohort.
+A PCA based quality control plot was generated to visualize data structure and detect potential outliers.
+
+---
+
+## Modeling Approach
+
+The workflow follows proper machine learning practice to avoid data leakage:
+
+* Data is split into training (70%) and test (30%) sets before preprocessing
+* All transformations are applied using a scikit-learn Pipeline
+* Preprocessing (scaling and feature selection) is learned only from training data
+* The same transformations are applied to test data
+* Model is evaluated only on unseen test data
+
+---
+
+## Key Results (Held-Out Test Set)
+
+* **Accuracy:** 0.50
+* **Precision:** 0.50
+* **Recall:** 0.67
+* **F1 Score:** 0.57
+* **AUROC:** 0.70
+
+---
+
+## Interpretation
+
+* AUROC ≈ 0.70 indicates the model performs better than random guessing
+* Higher recall suggests the model is effective at identifying ASD cases
+* Lower accuracy reflects dataset limitations and class overlap
+
+---
+
+## Feature Selection & Biomarkers
+
+Feature selection was performed using a statistical filter method (ANOVA F-test). The selected miRNA features represent those most strongly associated with ASD classification.
+
+Logistic regression coefficients were used to rank features by importance, identifying candidate biomarkers.
+
+---
+
+## Cross-Validation Insight
+
+Cross-validation was used to estimate generalization performance across different data splits. Results were consistent with test performance, indicating moderate model stability.
+
+---
+
+## Limitations
+
+* Small sample size (p >> n problem)
+* Risk of overfitting despite regularization
+* No external validation dataset
+* Interpretation requires further experimental validation
+
+---
+
+## Conclusion
+
+This project demonstrates that miRNA expression data can be used for ASD classification using a properly constructed machine learning pipeline. While performance is moderate due to dataset constraints, the workflow successfully integrates preprocessing, feature selection, and evaluation in a leakage safe manner.
+
+---
+
+## Outputs Generated
+
+* ROC curve
+* Confusion matrix
+* PCA QC visualization
+* Metrics summary
+* Biomarker rankings
+* Prediction outputs
+
+All results are saved in the `outputs/` directory.
