@@ -1,0 +1,2 @@
+best_cv_auroc_on_training_folds,test_accuracy,test_precision,test_recall,test_f1,test_auroc,best_params
+0.5625,0.5,0.5,0.6666666666666666,0.5714285714285714,0.7037037037037037,"{'classifier__C': 0.1, 'classifier__class_weight': None, 'classifier__penalty': 'l2', 'feature_selection__k': 10}"
