@@ -11,7 +11,7 @@ This project develops a machine learning pipeline to classify Autism Spectrum Di
 * ~60 samples (ASD vs Control)
 * ~2500 miRNA features
 * High-dimensional dataset (p >> n problem)
-
+* The miRNA expression data was already biologically preprocessed and normalized by the original dataset authors prior to download.
 ---
 
 ## Methodology
