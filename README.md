@@ -22,10 +22,11 @@ The workflow strictly follows proper machine learning practice to avoid data lea
 
    * Data is split before any preprocessing.
 
-2. **Preprocessing (Training Data Only)**
+2. **Machine Learning Preparation (Training Data Only)**
 
-   * Standardization 
-   * Feature selection using ANOVA F test
+   * Variance filtering
+   * Standardization
+   * ANOVA F-test feature selection
 
 3. **Model**
 
